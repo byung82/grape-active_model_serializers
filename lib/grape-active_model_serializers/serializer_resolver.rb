@@ -2,7 +2,6 @@ module Grape
   module ActiveModelSerializers
     class SerializerResolver
       def initialize(resource, options)
-        p "=======resource: #{resource}, #{options}"
         self.resource = resource
         self.options = options
       end
@@ -71,6 +70,10 @@ module Grape
       end
 
       def resource_serializer_klass
+        p "resource_serializer_klass"
+        p "resource_namespace: #{resource_namespace}"
+        p "resource_klass: #{resource_klass}"
+
         @resource_serializer_klass ||= [
           resource_namespace,
           "#{resource_klass}Serializer"
@@ -82,16 +85,22 @@ module Grape
       end
 
       def resource_namespace
+        p "resource_namespace"
+        p "resource_klass: #{resource_class.name.deconstantize}"
         klass = resource_class.name.deconstantize
         klass.empty? ? nil : klass
       end
 
       def resource_class
+        p "====== resource_class"
         if resource.respond_to?(:klass)
+          p "====== resource_class1: #{resource.klass}"
           resource.klass
         elsif resource.respond_to?(:to_ary) || resource.respond_to?(:all)
+          p "====== resource_class2: #{resource.first.class}"
           resource.first.class
         else
+          p "====== resource_class3: #{resource.class}"
           resource.class
         end
       end
