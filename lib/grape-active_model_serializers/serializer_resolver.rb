@@ -2,6 +2,7 @@ module Grape
   module ActiveModelSerializers
     class SerializerResolver
       def initialize(resource, options)
+        p "=======resource: #{resource}, #{options}"
         self.resource = resource
         self.options = options
       end
@@ -15,6 +16,7 @@ module Grape
       attr_accessor :resource, :options
 
       def serializer_class
+        p "=======serializer_class: #{@serializer_class}"
         return @serializer_class if defined?(@serializer_class)
         @serializer_class = resource_defined_class
         @serializer_class ||= collection_class
